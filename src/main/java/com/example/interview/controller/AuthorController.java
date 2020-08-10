@@ -2,6 +2,7 @@ package com.example.interview.controller;
 
 import com.example.interview.model.Author;
 import com.example.interview.service.AuthorService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -36,7 +37,9 @@ public class AuthorController {
     }
 
     @PatchMapping
-    public Mono<Author> update(@RequestBody Author author) {
-        return authorService.update(author);
+    public Mono<ResponseEntity<Author>> update(@RequestBody Author author) {
+        return authorService.update(author)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 }

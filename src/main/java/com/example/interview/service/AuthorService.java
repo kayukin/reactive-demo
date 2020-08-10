@@ -30,7 +30,8 @@ public class AuthorService {
     }
 
     public Mono<Author> addNew(Author author) {
-        return authorRepository.save(author);
+        return authorRepository.save(author)
+                .flatMap(this::countArticles);
     }
 
     public Mono<Void> delete(String id) {
@@ -38,9 +39,11 @@ public class AuthorService {
     }
 
     public Mono<Author> update(Author author) {
-        return authorRepository.findById(author.getId())
+        return Mono.justOrEmpty(author.getId())
+                .flatMap(authorRepository::findById)
                 .map(existing -> merge(existing, author))
-                .flatMap(authorRepository::save);
+                .flatMap(authorRepository::save)
+                .flatMap(this::countArticles);
     }
 
     private Author merge(Author target, Author source) {

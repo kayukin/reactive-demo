@@ -1,0 +1,43 @@
+###
+GET http://localhost:8080/authors
+
+###
+POST http://localhost:8080/authors
+Content-Type: application/json
+
+{
+  "name": "J. Doe",
+  "dateOfBirth": "1980-01-23"
+}
+
+###
+PATCH http://localhost:8080/authors
+Content-Type: application/json
+
+{
+  "id": "5f2be86a307f6c37628f4e95",
+  "name": "A.S. Pushkin"
+}
+
+###
+POST http://localhost:8080/articles
+Content-Type: application/json
+
+{
+  "title": "Reactive article",
+  "content": "Lorem ipsum",
+  "date": "2020-08-10",
+  "authorId": "5f3142a2e1749836f05731f9"
+}
+
+###
+GET http://localhost:8080/articles
+
+###
+PATCH http://localhost:8080/articles
+Content-Type: application/json
+
+{
+  "id": "5f3143ed2b9ae34eacff231c",
+  "authorId": "not exist"
+}

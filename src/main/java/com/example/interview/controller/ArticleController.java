@@ -2,6 +2,7 @@ package com.example.interview.controller;
 
 import com.example.interview.model.Article;
 import com.example.interview.service.ArticleService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,6 +29,13 @@ public class ArticleController {
     @PostMapping
     public Mono<Article> addNew(@RequestBody Article article) {
         return articleService.addNew(article);
+    }
+
+    @PatchMapping
+    public Mono<ResponseEntity<Article>> update(@RequestBody Article article) {
+        return articleService.update(article)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
