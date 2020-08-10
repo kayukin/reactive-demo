@@ -22,8 +22,10 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}")
-    public Mono<Author> findOne(@PathVariable String id) {
-        return authorService.findOne(id);
+    public Mono<ResponseEntity<Author>> findOne(@PathVariable String id) {
+        return authorService.findOne(id)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @PostMapping

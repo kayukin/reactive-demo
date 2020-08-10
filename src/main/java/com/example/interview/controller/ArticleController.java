@@ -22,8 +22,10 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public Mono<Article> findOne(@PathVariable String id) {
-        return articleService.findOne(id);
+    public Mono<ResponseEntity<Article>> findOne(@PathVariable String id) {
+        return articleService.findOne(id)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @PostMapping
