@@ -58,4 +58,8 @@ public class AuthorService {
         return articleRepository.countAllByAuthorId(author.getId())
                 .map(author::withArticlesCount);
     }
+
+    public Flux<Author> findByIds(Flux<String> authorIds) {
+        return authorRepository.findAllById(authorIds);
+    }
 }

@@ -1,12 +1,15 @@
 package com.example.interview.service;
 
 import com.example.interview.model.Article;
+import com.example.interview.model.Author;
 import com.example.interview.persistence.ArticleRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 public class ArticleService {
@@ -19,8 +22,16 @@ public class ArticleService {
     }
 
     public Flux<Article> findAll() {
-        return articleRepository.findAll()
-                .flatMap(this::fetchAuthor);
+        Flux<Article> articles = articleRepository.findAll();
+        return fetchAuthors(articles);
+    }
+
+    private Flux<Article> fetchAuthors(Flux<Article> articles) {
+        Flux<String> authorIds = articles.map(Article::getAuthorId);
+        Mono<Map<String, Author>> authors = authorService.findByIds(authorIds)
+                .collectMap(Author::getId, Function.identity());
+        return articles.flatMap(article -> authors.map(
+                authorMap -> article.withAuthor(authorMap.get(article.getAuthorId()))));
     }
 
     public Mono<Article> findOne(String id) {
