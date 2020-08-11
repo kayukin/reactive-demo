@@ -16,9 +16,16 @@
 
     <properties>
         <java.version>11</java.version>
+        <lorem.version>2.1</lorem.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.thedeanda</groupId>
+            <artifactId>lorem</artifactId>
+            <version>${lorem.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
