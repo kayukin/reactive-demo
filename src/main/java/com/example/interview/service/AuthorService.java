@@ -56,7 +56,8 @@ public class AuthorService {
 
     private Mono<Author> countArticles(Author author) {
         return articleRepository.countAllByAuthorId(author.getId())
-                .map(author::withArticlesCount);
+                .map(author::withArticlesCount)
+                .defaultIfEmpty(author);
     }
 
     public Flux<Author> findByIds(Flux<String> authorIds) {
